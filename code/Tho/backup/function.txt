@@ -1,0 +1,49 @@
+# class gauge_hand:
+#     def find_pointing(edges, quantity, thresh_low, min_length, max_gap, step, min_angle):
+#         inc_thresh = True
+#         while inc_thresh:
+#             lines = cv2.HoughLinesP(edges, 1, np.pi/180, thresh_low,
+#                                     minLineLength=min_length, maxLineGap=max_gap)
+#             if lines.shape[0] <= quantity:
+#                 inc_thresh = False
+#             else:
+#                 thresh_low += step
+#         cross_response_min = 1e9
+#         line_1 = lines[0, 0, :]
+#         line_2 = lines[1, 0, :]
+#         for i in range(lines.shape[0]):
+#             for j in range(i+1, lines.shape[0]):
+#                 len_1 = np.sqrt(np.square(lines[i, 0, 0]-lines[i, 0, 2]) + np.square(lines[i, 0, 1]-lines[i, 0, 3]))
+#                 len_2 = np.sqrt(np.square(lines[j, 0, 0]-lines[j, 0, 2]) + np.square(lines[j, 0, 1]-lines[j, 0, 3]))
+#                 cross_response = np.sqrt(np.sum(np.square(lines[i, 0, :] - lines[j, 0, :]))) - 0.5*(len_1 + len_2)
+#                 if cross_response_min > cross_response:
+#                     vec_1 = np.array([lines[i, 0, 0]-lines[i, 0, 2], lines[i, 0, 1]-lines[i, 0, 3]])
+#                     vec_2 = np.array([lines[j, 0, 0]-lines[j, 0, 2], lines[j, 0, 1]-lines[j, 0, 3]])
+#                     angle = gauge_hand.calc_angle(vec_1, vec_2)
+#                     if (angle > min_angle*np.pi/180 and
+#                         abs(angle-np.pi) > min_angle*np.pi/180 and
+#                             2*np.pi - angle > min_angle*np.pi/180):
+#                         cross_response_min = cross_response
+#                         line_1 = lines[i, 0, :]
+#                         line_2 = lines[j, 0, :]
+#         segments = np.array([np.sum((line_1[0:2] - line_2[0:2])**2),
+#                             np.sum((line_1[0:2] - line_2[2:4])**2),
+#                             np.sum((line_1[2:4] - line_2[0:2])**2),
+#                             np.sum((line_1[2:4] - line_2[2:4])**2)])
+#         segment_index = np.argmin(segments)
+#         tip_points = np.array([(segment_index - segment_index % 2)/2, segment_index % 2], dtype=np.int)
+#         float_points = np.ones(2, dtype=np.int) - tip_points
+#         line_1 = np.array([line_1[2*tip_points[0]:2*tip_points[0]+2],
+#                           line_1[2*float_points[0]:2*float_points[0]+2]])
+#         line_2 = np.array([line_2[2*tip_points[1]:2*tip_points[1]+2],
+#                           line_2[2*float_points[1]:2*float_points[1]+2]])
+#         return np.array([line_1, line_2])
+
+#     def calc_angle(vec, origin_vec):
+#         vec_unit = vec / np.linalg.norm(vec)
+#         origin_vec_unit = origin_vec / np.linalg.norm(origin_vec)
+#         if np.cross(vec, origin_vec_unit) <= 0:
+#             angle = np.arccos(np.dot(vec_unit, origin_vec_unit))
+#         else:
+#             angle = 2*np.pi - np.arccos(np.dot(vec_unit, origin_vec_unit))
+#         return angle
