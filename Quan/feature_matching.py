@@ -22,7 +22,7 @@ def superglue(image, template, mask=None):
     weights = 'outdoor'  # SuperGlue weights
     sinkhorn_iterations = 20  # Number of Sinkhorn iterations performed by SuperGlue
     match_threshold = 0.2  # SuperGlue match threshold
-    resize = [416, 416]
+    resize = [640, 480]
     resize_float = True
     rotation_int = False
 
