@@ -7,6 +7,8 @@ from cv2 import imread, imshow, waitKey, resize, selectROI
 import cv2
 import numpy as np
 from ast import literal_eval
+import sys
+from feature_matching import superglue
 
 
 def test_data():
@@ -197,7 +199,8 @@ if __name__ == '__main__':
     # test_data()
     # draw_center_and_marks()
     # print(get_center_and_marks(r'd:\WON\THI_GIAC_MAY\Data\Test\feature_matching\center_and_marks.txt')[-1])
-    print("Current Directory", os.getcwd())
+    # print("Current Directory", os.getcwd())
     # print("Current Directory", os.pardir)
+    print('ok')
 
 
